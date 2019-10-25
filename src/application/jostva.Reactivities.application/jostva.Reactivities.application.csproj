@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\jostva.Reactivities.Domain\jostva.Reactivities.Domain.csproj" />
+    <ProjectReference Include="..\..\persistence\jostva.Reactivities.Data\jostva.Reactivities.Data.csproj" />
+  </ItemGroup>
+
+</Project>

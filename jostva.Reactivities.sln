@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{34E36DD1-C8B0-4832-B6BC-17A3E1DE3C78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jostva.Reactivities.Domain", "src\common\jostva.Reactivities.Domain\jostva.Reactivities.Domain.csproj", "{FB86F8EB-B157-4B8C-82F4-80B4E3C9997B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "application", "application", "{6A2E6B39-48B1-4C18-A3D8-2CF6B59EB1AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jostva.Reactivities.application", "src\application\jostva.Reactivities.application\jostva.Reactivities.application.csproj", "{DFF0F426-CDA0-447F-8147-381FA2383A4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "persistence", "persistence", "{CB851FD8-07B4-4630-AEAB-A43257F1241A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jostva.Reactivities.Data", "src\persistence\jostva.Reactivities.Data\jostva.Reactivities.Data.csproj", "{04797CDA-4757-45AB-BCB9-F050E1E7B7C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{05A18CBB-96A3-4AA4-BE57-B9C620C4266B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apis", "apis", "{5AA2299F-C5B2-49AD-B0AA-CA985A5BFE3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jostva.Reactivities.API", "src\apis\jostva.Reactivities.API\jostva.Reactivities.API.csproj", "{EE34550C-1D64-4894-A085-45AFD2A004AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB86F8EB-B157-4B8C-82F4-80B4E3C9997B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB86F8EB-B157-4B8C-82F4-80B4E3C9997B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB86F8EB-B157-4B8C-82F4-80B4E3C9997B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB86F8EB-B157-4B8C-82F4-80B4E3C9997B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFF0F426-CDA0-447F-8147-381FA2383A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF0F426-CDA0-447F-8147-381FA2383A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF0F426-CDA0-447F-8147-381FA2383A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF0F426-CDA0-447F-8147-381FA2383A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04797CDA-4757-45AB-BCB9-F050E1E7B7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04797CDA-4757-45AB-BCB9-F050E1E7B7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04797CDA-4757-45AB-BCB9-F050E1E7B7C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04797CDA-4757-45AB-BCB9-F050E1E7B7C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE34550C-1D64-4894-A085-45AFD2A004AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE34550C-1D64-4894-A085-45AFD2A004AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE34550C-1D64-4894-A085-45AFD2A004AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE34550C-1D64-4894-A085-45AFD2A004AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FB86F8EB-B157-4B8C-82F4-80B4E3C9997B} = {34E36DD1-C8B0-4832-B6BC-17A3E1DE3C78}
+		{DFF0F426-CDA0-447F-8147-381FA2383A4D} = {6A2E6B39-48B1-4C18-A3D8-2CF6B59EB1AE}
+		{04797CDA-4757-45AB-BCB9-F050E1E7B7C1} = {CB851FD8-07B4-4630-AEAB-A43257F1241A}
+		{EE34550C-1D64-4894-A085-45AFD2A004AF} = {5AA2299F-C5B2-49AD-B0AA-CA985A5BFE3D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2263853D-2431-4C98-845A-5AA46034B6D7}
+	EndGlobalSection
+EndGlobal
