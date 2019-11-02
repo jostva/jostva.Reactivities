@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using jostva.Reactivities.Data;
+﻿using jostva.Reactivities.Data;
 using jostva.Reactivities.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace jostva.Reactivities.API.Controllers
 {
