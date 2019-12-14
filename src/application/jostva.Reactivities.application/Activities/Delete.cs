@@ -1,6 +1,8 @@
+using jostva.Reactivities.application.Errors;
 using jostva.Reactivities.Data;
 using MediatR;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +31,7 @@ namespace jostva.Reactivities.application.Activities
                 var activity = await context.Activities.FindAsync(request.Id);
                 if (activity == null)
                 {
-                    throw new Exception("Could not find activity");
+                    throw new RestException(HttpStatusCode.NotFound, new { activity = "Not Found" });
                 }
 
                 context.RemoveRange(activity);
