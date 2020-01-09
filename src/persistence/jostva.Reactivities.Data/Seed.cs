@@ -1,14 +1,51 @@
+#region usings
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using jostva.Reactivities.Domain;
+using Microsoft.AspNetCore.Identity;
+
+#endregion
 
 namespace jostva.Reactivities.Data
 {
     public class Seed
     {
-        public static void SeedData(DataContext context)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
+            if (!userManager.Users.Any())
+            {
+                List<AppUser> users = new List<AppUser>()
+                {
+                    new AppUser()
+                    {
+                        DisplayName = "Gohan",
+                        UserName = "Johan",
+                        Email = "johan@test.com"
+                    },
+                    new AppUser()
+                    {
+                        DisplayName = "Lola",
+                        UserName = "Lola",
+                        Email = "lola@test.com"
+                    },
+                    new AppUser()
+                    {
+                        DisplayName = "Jane",
+                        UserName = "Jane",
+                        Email = "jane@test.com"
+                    }
+                };
+
+
+                foreach (AppUser item in users)
+                {
+                    await userManager.CreateAsync(item, "Pa$$w0rd");
+                }
+            }
+
             if (!context.Activities.Any())
             {
                 List<Activity> activities = new List<Activity>()

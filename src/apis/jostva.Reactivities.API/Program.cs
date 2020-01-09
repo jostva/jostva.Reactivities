@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿#region usings
+
 using jostva.Reactivities.Data;
+using jostva.Reactivities.Domain;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+
+#endregion
 
 namespace jostva.Reactivities.API
 {
@@ -25,8 +26,9 @@ namespace jostva.Reactivities.API
                 try
                 {
                     var context = services.GetRequiredService<DataContext>();
+                    UserManager<AppUser> userManager = services.GetRequiredService<UserManager<AppUser>>();
                     context.Database.Migrate();
-                    Seed.SeedData(context);
+                    Seed.SeedData(context, userManager).Wait();
                 }
                 catch (Exception exception)
                 {

@@ -1,10 +1,10 @@
 ﻿using jostva.Reactivities.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace jostva.Reactivities.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser>
     {
         public DataContext(DbContextOptions options)
             : base(options)
@@ -19,6 +19,8 @@ namespace jostva.Reactivities.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Value>()
                    .HasData(
                        new Value { Id = 1, Name = "Value 101" },
