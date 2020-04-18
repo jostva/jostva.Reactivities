@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace jostva.Reactivities.Domain
 {
@@ -6,5 +7,6 @@ namespace jostva.Reactivities.Domain
     {
         public string DisplayName { get; set; }
 
+        public virtual ICollection<UserActivity> UserActivities { get; set; }
     }
 }
