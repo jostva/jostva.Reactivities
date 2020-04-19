@@ -1,6 +1,6 @@
 ﻿using System;
-//using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace jostva.Reactivities.application.Activities
 {
@@ -20,7 +20,7 @@ namespace jostva.Reactivities.application.Activities
 
         public string Venue { get; set; }
 
-        //[JsonPropertyName("attendees")]
+        [JsonPropertyName("attendees")]   //  Net Core 3.1
         public ICollection<AttendeeDto> UserActivities { get; set; }
     }
 }
