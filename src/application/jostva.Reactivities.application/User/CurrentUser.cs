@@ -4,6 +4,7 @@ using jostva.Reactivities.application.Interfaces;
 using jostva.Reactivities.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace jostva.Reactivities.application.User
                     DisplayName = user.DisplayName,
                     Username = user.UserName,
                     Token = jwtGenerator.CreateToken(user),
-                    Image = null
+                    Image = user.Photos.FirstOrDefault(item => item.IsMain)?.Url
                 };
             }
         }

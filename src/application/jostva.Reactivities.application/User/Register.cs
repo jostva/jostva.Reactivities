@@ -88,7 +88,7 @@ namespace jostva.Reactivities.application.User
                         DisplayName = user.DisplayName,
                         Token = jwtGenerator.CreateToken(user),
                         Username = user.UserName,
-                        Image = null
+                        Image = user.Photos.FirstOrDefault(item => item.IsMain)?.Url
                     };
                 }
 

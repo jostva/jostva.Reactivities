@@ -18,6 +18,8 @@ namespace jostva.Reactivities.Data
 
         public DbSet<UserActivity> UserActivities { get; set; }
 
+        public DbSet<Photo> Photos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

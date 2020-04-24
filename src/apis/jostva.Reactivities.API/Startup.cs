@@ -7,6 +7,7 @@ using jostva.Reactivities.application.Activities;
 using jostva.Reactivities.application.Interfaces;
 using jostva.Reactivities.Data;
 using jostva.Reactivities.Domain;
+using jostva.Reactivities.Infrastructure.Photos;
 using jostva.Reactivities.Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -91,6 +92,8 @@ namespace jostva.Reactivities.API
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
