@@ -5,9 +5,7 @@ import { IActivity } from "../../../app/models/activity";
 import { format } from "date-fns";
 import ActivityListItemAttendees from "./ActivityListItemAttendees";
 
-export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
-  activity,
-}) => {
+const ActivityListItem: React.FC<{ activity: IActivity }> = ({ activity }) => {
   const host = activity.attendees.filter((x) => x.isHost)[0];
   return (
     <Segment.Group>
@@ -26,7 +24,10 @@ export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
               </Item.Header>
               <Item.Description>
                 Hosted by
-                <Link to={`/profile/${host.username}`}> {host.displayName}</Link>
+                <Link to={`/profile/${host.username}`}>
+                  {" "}
+                  {host.displayName}
+                </Link>
               </Item.Description>
               {activity.isHost && (
                 <Item.Description>
@@ -42,7 +43,7 @@ export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
                   <Label
                     basic
                     color="green"
-                    content="You are hosting this activity"
+                    content="You are going to this activity"
                   />
                 </Item.Description>
               )}

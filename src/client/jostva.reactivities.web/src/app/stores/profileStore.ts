@@ -1,9 +1,8 @@
-import { IPhoto } from "./../models/profile";
-import { toast } from "react-toastify";
 import { RootStore } from "./rootStore";
 import { observable, action, runInAction, computed } from "mobx";
-import { IProfile } from "../models/profile";
+import { IProfile, IPhoto } from "../models/profile";
 import agent from "../api/agent";
+import { toast } from "react-toastify";
 
 export default class ProfileStore {
   rootStore: RootStore;
@@ -12,7 +11,7 @@ export default class ProfileStore {
   }
 
   @observable profile: IProfile | null = null;
-  @observable loadingProfile = true; // false
+  @observable loadingProfile = true;
   @observable uploadingPhoto = false;
   @observable loading = false;
 
@@ -93,7 +92,7 @@ export default class ProfileStore {
         this.loading = false;
       });
     } catch (error) {
-      toast.error("Proble deleting the photo");
+      toast.error("Problem deleting the photo");
       runInAction(() => {
         this.loading = false;
       });

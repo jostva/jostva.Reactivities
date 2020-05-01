@@ -9,21 +9,20 @@ import { combineValidators, isRequired } from "revalidate";
 import ErrorMessage from "../../app/common/form/ErrorMessage";
 
 const validate = combineValidators({
-  username: isRequired("username"),
-  displayName: isRequired("display name"),
-  email: isRequired("email"),
-  password: isRequired("password")
+  username: isRequired("Username"),
+  displayName: isRequired("DisplayName"),
+  email: isRequired("Email"),
+  password: isRequired("Password"),
 });
 
-export const RegisterForm = () => {
+const RegisterForm = () => {
   const rootStore = useContext(RootStoreContext);
   const { register } = rootStore.userStore;
-
   return (
     <FinalForm
       onSubmit={(values: IUserFormValues) =>
-        register(values).catch(error => ({
-          [FORM_ERROR]: error
+        register(values).catch((error) => ({
+          [FORM_ERROR]: error,
         }))
       }
       validate={validate}
@@ -33,7 +32,7 @@ export const RegisterForm = () => {
         submitError,
         invalid,
         pristine,
-        dirtySinceLastSubmit
+        dirtySinceLastSubmit,
       }) => (
         <Form onSubmit={handleSubmit} error>
           <Header

@@ -2,8 +2,9 @@ import React, { useContext, useState } from "react";
 import { Tab, Header, Card, Image, Button, Grid } from "semantic-ui-react";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import PhotoUploadWidget from "../../app/common/photoUpload/PhotoUploadWidget";
+import { observer } from "mobx-react-lite";
 
-export const ProfilePhotos = () => {
+const ProfilePhotos = () => {
   const rootStore = useContext(RootStoreContext);
   const {
     profile,
@@ -14,14 +15,14 @@ export const ProfilePhotos = () => {
     deletePhoto,
     loading,
   } = rootStore.profileStore;
-  const [addPhotoMode, setAddPhotoMde] = useState(false);
+  const [addPhotoMode, setAddPhotoMode] = useState(false);
   const [target, setTarget] = useState<string | undefined>(undefined);
   const [deleteTarget, setDeleteTarget] = useState<string | undefined>(
     undefined
   );
 
   const handleUploadImage = (photo: Blob) => {
-    uploadPhoto(photo).then(() => setAddPhotoMde(false));
+    uploadPhoto(photo).then(() => setAddPhotoMode(false));
   };
 
   return (
@@ -31,10 +32,10 @@ export const ProfilePhotos = () => {
           <Header floated="left" icon="image" content="Photos" />
           {isCurrentUser && (
             <Button
+              onClick={() => setAddPhotoMode(!addPhotoMode)}
               floated="right"
               basic
               content={addPhotoMode ? "Cancel" : "Add Photo"}
-              onClick={() => setAddPhotoMde(!addPhotoMode)}
             />
           )}
         </Grid.Column>
@@ -53,11 +54,11 @@ export const ProfilePhotos = () => {
                     {isCurrentUser && (
                       <Button.Group fluid widths={2}>
                         <Button
-                          name={photo.id}
                           onClick={(e) => {
                             setMainPhoto(photo);
                             setTarget(e.currentTarget.name);
                           }}
+                          name={photo.id}
                           disabled={photo.isMain}
                           loading={loading && target === photo.id}
                           basic
@@ -88,4 +89,4 @@ export const ProfilePhotos = () => {
   );
 };
 
-export default ProfilePhotos;
+export default observer(ProfilePhotos);

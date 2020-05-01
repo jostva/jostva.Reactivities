@@ -8,16 +8,15 @@ import { format } from "date-fns";
 const ActivityList: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
   const { activitiesByDate } = rootStore.activityStore;
-
   return (
     <Fragment>
       {activitiesByDate.map(([group, activities]) => (
         <Fragment key={group}>
-          <Label key={group} size="large" color="blue">
-            {format( group, 'eeee do MMMM')}
+          <Label size="large" color="blue">
+            {format(group, "eeee do MMMM")}
           </Label>
           <Item.Group divided>
-            {activities.map(activity => (
+            {activities.map((activity) => (
               <ActivityListItem key={activity.id} activity={activity} />
             ))}
           </Item.Group>

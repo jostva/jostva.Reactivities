@@ -1,11 +1,11 @@
-import { setActivityProps, createAttendee } from "./../common/util/util";
-import { toast } from "react-toastify";
-import { IActivity } from "./../models/activity";
 import { observable, action, computed, runInAction } from "mobx";
 import { SyntheticEvent } from "react";
+import { IActivity } from "../models/activity";
 import agent from "../api/agent";
 import { history } from "../..";
+import { toast } from "react-toastify";
 import { RootStore } from "./rootStore";
+import { setActivityProps, createAttendee } from "../common/util/util";
 
 export default class ActivityStore {
   rootStore: RootStore;
@@ -53,10 +53,9 @@ export default class ActivityStore {
         this.loadingInitial = false;
       });
     } catch (error) {
-      runInAction("loading activities error", () => {
+      runInAction("load activities error", () => {
         this.loadingInitial = false;
       });
-      console.log(error);
     }
   };
 
@@ -75,6 +74,7 @@ export default class ActivityStore {
           this.activityRegistry.set(activity.id, activity);
           this.loadingInitial = false;
         });
+        return activity;
       } catch (error) {
         runInAction("get activity error", () => {
           this.loadingInitial = false;
@@ -102,13 +102,13 @@ export default class ActivityStore {
       attendees.push(attendee);
       activity.attendees = attendees;
       activity.isHost = true;
-      runInAction("creating activity", () => {
+      runInAction("create activity", () => {
         this.activityRegistry.set(activity.id, activity);
         this.submitting = false;
       });
       history.push(`/activities/${activity.id}`);
     } catch (error) {
-      runInAction("creating activity error", () => {
+      runInAction("create activity error", () => {
         this.submitting = false;
       });
       toast.error("Problem submitting data");
@@ -127,7 +127,7 @@ export default class ActivityStore {
       });
       history.push(`/activities/${activity.id}`);
     } catch (error) {
-      runInAction("editing activity error", () => {
+      runInAction("edit activity error", () => {
         this.submitting = false;
       });
       toast.error("Problem submitting data");
@@ -149,7 +149,7 @@ export default class ActivityStore {
         this.target = "";
       });
     } catch (error) {
-      runInAction("deleting activity error", () => {
+      runInAction("delete activity error", () => {
         this.submitting = false;
         this.target = "";
       });
