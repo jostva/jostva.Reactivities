@@ -3,6 +3,7 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using jostva.Reactivities.API.Middleware;
+using jostva.Reactivities.API.SignalR;
 using jostva.Reactivities.application.Activities;
 using jostva.Reactivities.application.Interfaces;
 using jostva.Reactivities.Data;
@@ -14,14 +15,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -51,12 +55,14 @@ namespace jostva.Reactivities.API
                 {
                     policy.AllowAnyHeader()
                           .AllowAnyMethod()
-                          .WithOrigins("http://localhost:3000");
+                          .WithOrigins("http://localhost:3000")
+                          .AllowCredentials();
                 });
             });
 
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(List.Handler));
+            services.AddSignalR();
             services.AddControllers(options =>
             {
                 AuthorizationPolicy policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -78,7 +84,12 @@ namespace jostva.Reactivities.API
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>
+                    {
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
                     .AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
@@ -87,6 +98,19 @@ namespace jostva.Reactivities.API
                             IssuerSigningKey = key,
                             ValidateAudience = false,
                             ValidateIssuer = false
+                        };
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnMessageReceived = context =>
+                            {
+                                StringValues accessToken = context.Request.Query["access_token"];
+                                PathString path = context.HttpContext.Request.Path;
+                                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chats"))
+                                {
+                                    context.Token = accessToken;
+                                }
+                                return Task.CompletedTask;
+                            }
                         };
                     });
 
@@ -115,6 +139,7 @@ namespace jostva.Reactivities.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

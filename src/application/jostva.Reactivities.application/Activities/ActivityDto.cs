@@ -1,4 +1,5 @@
-﻿using System;
+﻿using jostva.Reactivities.application.Comments;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -22,5 +23,7 @@ namespace jostva.Reactivities.application.Activities
 
         [JsonPropertyName("attendees")]   //  Net Core 3.1
         public ICollection<AttendeeDto> UserActivities { get; set; }
+
+        public ICollection<CommentDto> Comments { get; set; }
     }
 }

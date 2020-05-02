@@ -25,24 +25,44 @@ namespace jostva.Reactivities.Infrastructure.Security
         }
 
 
+        //public string CreateToken(AppUser user)
+        //{
+        //    List<Claim> claims = new List<Claim>()
+        //    {
+        //        //new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+        //        new Claim(ClaimTypes.NameIdentifier, user.UserName)
+        //    };
+
+        //    //  Generate signing credentials
+        //    SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+        //    SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor()
+        //    {
+        //        Subject = new ClaimsIdentity(claims),
+        //        Expires = DateTime.Now.AddDays(7),
+        //        SigningCredentials = credentials
+        //    };
+
+        //    JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        //    SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+
+        //    return tokenHandler.WriteToken(token);
+        //}
+
+
         public string CreateToken(AppUser user)
         {
-            var claims = new List<Claim>()
-            {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
-            };
-
-            //  Generate signing credentials
-            SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = credentials
-            };
-
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserName)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
+            };
+
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
