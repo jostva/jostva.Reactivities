@@ -6,6 +6,7 @@ using jostva.Reactivities.API.Middleware;
 using jostva.Reactivities.API.SignalR;
 using jostva.Reactivities.application.Activities;
 using jostva.Reactivities.application.Interfaces;
+using jostva.Reactivities.application.Profiles;
 using jostva.Reactivities.Data;
 using jostva.Reactivities.Domain;
 using jostva.Reactivities.Infrastructure.Photos;
@@ -117,6 +118,7 @@ namespace jostva.Reactivities.API
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<IProfileReader, ProfileReader>();
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
         }
 

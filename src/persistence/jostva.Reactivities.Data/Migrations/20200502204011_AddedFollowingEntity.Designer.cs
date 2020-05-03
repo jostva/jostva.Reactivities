@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jostva.Reactivities.Data;
 
 namespace jostva.Reactivities.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200502204011_AddedFollowingEntity")]
+    partial class AddedFollowingEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,9 +264,11 @@ namespace jostva.Reactivities.Data.Migrations
 
                     b.Property<string>("TargetId");
 
+                    b.Property<string>("ObserverId1");
+
                     b.HasKey("ObserverId", "TargetId");
 
-                    b.HasIndex("TargetId");
+                    b.HasIndex("ObserverId1");
 
                     b.ToTable("Followings");
                 });
@@ -376,15 +380,14 @@ namespace jostva.Reactivities.Data.Migrations
 
             modelBuilder.Entity("jostva.Reactivities.Domain.UserFollowing", b =>
                 {
-                    b.HasOne("jostva.Reactivities.Domain.AppUser", "Observer")
-                        .WithMany("Followings")
+                    b.HasOne("jostva.Reactivities.Domain.AppUser", "Target")
+                        .WithMany("Followers")
                         .HasForeignKey("ObserverId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("jostva.Reactivities.Domain.AppUser", "Target")
-                        .WithMany("Followers")
-                        .HasForeignKey("TargetId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("jostva.Reactivities.Domain.AppUser", "Observer")
+                        .WithMany("Followings")
+                        .HasForeignKey("ObserverId1");
                 });
 #pragma warning restore 612, 618
         }
