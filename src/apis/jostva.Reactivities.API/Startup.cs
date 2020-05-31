@@ -25,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace jostva.Reactivities.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options =>
             {
@@ -50,12 +51,30 @@ namespace jostva.Reactivities.API
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseLazyLoadingProxies();
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            ConfigureServices(services);
+        }
+
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", policy =>
                 {
                     policy.AllowAnyHeader()
                           .AllowAnyMethod()
+                          .WithExposedHeaders("WWW-Authenticate")
                           .WithOrigins("http://localhost:3000")
                           .AllowCredentials();
                 });
@@ -85,12 +104,7 @@ namespace jostva.Reactivities.API
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            services.AddAuthentication(options =>
-                    {
-                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
@@ -98,7 +112,9 @@ namespace jostva.Reactivities.API
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey = key,
                             ValidateAudience = false,
-                            ValidateIssuer = false
+                            ValidateIssuer = false,
+                            ValidateLifetime = true,
+                            ClockSkew = TimeSpan.Zero
                         };
                         options.Events = new JwtBearerEvents
                         {
@@ -110,6 +126,7 @@ namespace jostva.Reactivities.API
                                 {
                                     context.Token = accessToken;
                                 }
+
                                 return Task.CompletedTask;
                             }
                         };
@@ -130,11 +147,31 @@ namespace jostva.Reactivities.API
             {
                 //app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
+
+            //  Security Headers
+            app.UseXContentTypeOptions();
+            app.UseReferrerPolicy(options => options.NoReferrer());
+            app.UseXXssProtection(options => options.EnabledWithBlockMode());
+            app.UseXfo(options => options.Deny());
+            app.UseCsp(options => options.BlockAllMixedContent()
+                                         .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "sha256-F4GpCPyRepgP5znjMD8sc7PEjzet5Eef4r09dEGPpTs="))
+                                         .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
+                                         .FormActions(s => s.Self())
+                                         .FrameAncestors(s => s.Self())
+                                         .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "blob:", "data:"))
+                                         .ScriptSources(s => s.Self().CustomSources("sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU=")));
 
             //app.UseHttpsRedirection();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -142,6 +179,7 @@ namespace jostva.Reactivities.API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }

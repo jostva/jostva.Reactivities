@@ -1,9 +1,9 @@
 ﻿using jostva.Reactivities.application.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace jostva.Reactivities.API.Middleware
@@ -57,8 +57,7 @@ namespace jostva.Reactivities.API.Middleware
             context.Response.ContentType = "application/json";
             if (errors != null)
             {
-                //  TODO: Usar System.Text.Json en Core 3.0  JsonSerializer.Serialize(new { errors });
-                var result = JsonConvert.SerializeObject(new
+                string result = JsonSerializer.Serialize(new
                 {
                     errors
                 });

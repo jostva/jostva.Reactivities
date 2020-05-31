@@ -59,7 +59,7 @@ namespace jostva.Reactivities.Infrastructure.Security
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserName)
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
             };
 

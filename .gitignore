@@ -4,3 +4,6 @@ obj
 .vs
 .DS_Store
 *.db
+wwwroot
+publish
+
