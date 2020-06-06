@@ -33,5 +33,13 @@ namespace jostva.Reactivities.API.Controllers
         {
             return await Mediator.Send(new CurrentUser.Query());
         }
+
+
+        [AllowAnonymous]
+        [HttpPost("facebook")            ]
+        public async Task<ActionResult<User>> FacebookLogin(ExternalLogin.Query query)
+        {
+            return await Mediator.Send(query);
+        }
     }
 }

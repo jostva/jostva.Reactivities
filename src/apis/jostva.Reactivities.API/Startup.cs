@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using AutoMapper;
+using CloudinaryDotNet.Actions;
 using FluentValidation.AspNetCore;
 using jostva.Reactivities.API.Middleware;
 using jostva.Reactivities.API.SignalR;
@@ -48,7 +49,8 @@ namespace jostva.Reactivities.API
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseLazyLoadingProxies();
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             ConfigureServices(services);
@@ -132,11 +134,13 @@ namespace jostva.Reactivities.API
                         };
                     });
 
-            services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IJwtGenerator, JwtGenerator>(); 
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddScoped<IProfileReader, ProfileReader>();
+            services.AddScoped<IFacebookAccesor, FacebookAccessor>();
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+            services.Configure<FacebookAppSettings>(Configuration.GetSection("Authentication:Facebook"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
